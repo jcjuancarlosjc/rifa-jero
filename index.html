@@ -309,7 +309,7 @@ function load(){
   if(!cargado)ESTADO.textContent="Cargando números…";
   fetch(CONFIG.API+"?accion=lista").then(r=>r.json()).then(j=>{
     if(!j.ok)throw 0;
-    const s={};j.numeros.forEach(x=>s[x.n]={s:x.estado==="pagado"?"sold":"pend",w:x.nombre});
+    const s={};j.numeros.forEach(x=>{if(/^\d{2}$/.test(x.n)&&typeof x.nombre==="string")s[x.n]={s:x.estado==="pagado"?"sold":"pend",w:x.nombre}});
     state=s;cargado=true;if(j.cerrado)cerrado=true;avisoCierre();render();
   }).catch(()=>{ESTADO.textContent=cargado?"No se pudo actualizar. Reintentando…":"No se pudieron cargar los números. Recarga la página en un momento."});
 }
